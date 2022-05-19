@@ -4,7 +4,7 @@ import TopHeader from "../../components/sandbox/TopHeader.jsx";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import Home from "./home/Home.jsx";
 import UserList from "./user-manage/UserList.jsx";
-import RoleList from "./right-manage/RightList.jsx";
+import RoleList from "./right-manage/RoleList.jsx";
 import RightList from "./right-manage/RightList.jsx";
 import Nopermission from "./nopermission/Nopermission.jsx";
 import "./NewsSandBox.scss";
