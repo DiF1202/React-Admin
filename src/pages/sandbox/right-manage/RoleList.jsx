@@ -8,12 +8,88 @@ import {
 } from "@ant-design/icons";
 const { confirm } = Modal;
 
+const treeData1 = [
+  {
+    title: "0-0",
+    key: "0-0",
+    children: [
+      {
+        title: "0-0-0",
+        key: "0-0-0",
+        children: [
+          {
+            title: "0-0-0-0",
+            key: "0-0-0-0",
+          },
+          {
+            title: "0-0-0-1",
+            key: "0-0-0-1",
+          },
+          {
+            title: "0-0-0-2",
+            key: "0-0-0-2",
+          },
+        ],
+      },
+      {
+        title: "0-0-1",
+        key: "0-0-1",
+        children: [
+          {
+            title: "0-0-1-0",
+            key: "0-0-1-0",
+          },
+          {
+            title: "0-0-1-1",
+            key: "0-0-1-1",
+          },
+          {
+            title: "0-0-1-2",
+            key: "0-0-1-2",
+          },
+        ],
+      },
+      {
+        title: "0-0-2",
+        key: "0-0-2",
+      },
+    ],
+  },
+  {
+    title: "0-1",
+    key: "0-1",
+    children: [
+      {
+        title: "0-1-0-0",
+        key: "0-1-0-0",
+      },
+      {
+        title: "0-1-0-1",
+        key: "0-1-0-1",
+      },
+      {
+        title: "0-1-0-2",
+        key: "0-1-0-2",
+      },
+    ],
+  },
+  {
+    title: "0-2",
+    key: "0-2",
+  },
+];
 const RoleList = () => {
   const [dataSource, setdataSource] = useState([]);
   const [rightList, setRightList] = useState([]);
   const [currentRights, setcurrentRights] = useState([]);
   const [currentId, setcurrentId] = useState(0);
   const [isModalVisible, setisModalVisible] = useState(false);
+  //
+  const [expandedKeys, setExpandedKeys] = useState(["0-0-0", "0-0-1"]);
+  const [checkedKeys, setCheckedKeys] = useState(["0-0-0"]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+
   const columns = [
     {
       title: "ID",
@@ -134,6 +210,19 @@ const RoleList = () => {
     setcurrentRights(checkKeys.checked);
   };
 
+  const onExpand = (expandedKeysValue) => {
+    console.log("onExpand", expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+    // or, you can remove all expanded children keys.
+
+    setExpandedKeys(expandedKeysValue);
+    setAutoExpandParent(false);
+  };
+
+  const onSelect = (selectedKeysValue, info) => {
+    console.log("onSelect", info);
+    setSelectedKeys(selectedKeysValue);
+  };
+
   return (
     <div>
       <Table
@@ -149,10 +238,13 @@ const RoleList = () => {
       >
         <Tree
           checkable
+          onExpand={onExpand}
+          expandedKeys={expandedKeys}
           checkedKeys={currentRights}
           onCheck={onCheck}
+          onSelect={onSelect}
           checkStrictly={true}
-          treeData={rightList}
+          treeData={treeData1}
         />
       </Modal>
     </div>
