@@ -1,7 +1,6 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { Form, Input, Select } from "antd";
 const { Option } = Select;
-
 const UserForm = forwardRef((props, ref) => {
   const [isDisabled, setisDisabled] = useState(false);
 
@@ -9,46 +8,107 @@ const UserForm = forwardRef((props, ref) => {
     setisDisabled(props.isUpdateDisabled);
   }, [props.isUpdateDisabled]);
 
+  const { roleId, region } = JSON.parse(localStorage.getItem("token"));
+  const roleObj = {
+    1: "superadmin",
+    2: "admin",
+    3: "editor",
+  };
+
+  //对权限控制
+  const checkRegionDisabled = (item) => {
+    if (props.isUpdate) {
+      if (roleObj[roleId] === "superadmin") {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      if (roleObj[roleId] === "superadmin") {
+        return false;
+      } else {
+        return item.value !== region;
+      }
+    }
+  };
+
+  //添加权限控制
+  const checkRoleDisabled = (item) => {
+    if (props.isUpdate) {
+      if (roleObj[roleId] === "superadmin") {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      if (roleObj[roleId] === "superadmin") {
+        return false;
+      } else {
+        return roleObj[item.id] !== "editor";
+      }
+    }
+  };
+
   return (
-    <Form layout="vertical" ref={ref}>
+    <Form ref={ref} layout="vertical">
       <Form.Item
-        label="用户名"
         name="username"
-        rules={[{ required: true, message: "请输入用户名" }]}
+        label="用户名"
+        rules={[
+          { required: true, message: "Please input the title of collection!" },
+        ]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="密码"
         name="password"
-        rules={[{ required: true, message: "请输入密码" }]}
+        label="密码"
+        rules={[
+          { required: true, message: "Please input the title of collection!" },
+        ]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="区域"
         name="region"
-        rules={isDisabled ? [] : [{ required: true, message: "请输入区域" }]}
+        label="区域"
+        rules={
+          isDisabled
+            ? []
+            : [
+                {
+                  required: true,
+                  message: "Please input the title of collection!",
+                },
+              ]
+        }
       >
         <Select disabled={isDisabled}>
           {props.regionList.map((item) => (
-            <Option value={item.value} key={item.id}>
+            <Option
+              value={item.value}
+              key={item.id}
+              disabled={checkRegionDisabled(item)}
+            >
               {item.title}
             </Option>
           ))}
         </Select>
       </Form.Item>
       <Form.Item
-        label="角色"
         name="roleId"
-        rules={[{ required: true, message: "请输入角色" }]}
+        label="角色"
+        rules={[
+          { required: true, message: "Please input the title of collection!" },
+        ]}
       >
         <Select
           onChange={(value) => {
+            // console.log(value)
             if (value === 1) {
               setisDisabled(true);
               ref.current.setFieldsValue({
-                region: "", //表单form的name值来决定的
+                region: "",
               });
             } else {
               setisDisabled(false);
@@ -56,7 +116,11 @@ const UserForm = forwardRef((props, ref) => {
           }}
         >
           {props.roleList.map((item) => (
-            <Option value={item.id} key={item.id}>
+            <Option
+              value={item.id}
+              key={item.id}
+              disabled={checkRoleDisabled(item)}
+            >
               {item.roleName}
             </Option>
           ))}
@@ -65,5 +129,4 @@ const UserForm = forwardRef((props, ref) => {
     </Form>
   );
 });
-
 export default UserForm;

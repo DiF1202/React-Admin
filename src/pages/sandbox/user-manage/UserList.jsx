@@ -20,7 +20,17 @@ const UserList = () => {
   const [isUpdateDisabled, setisUpdateDisabled] = useState(false);
   const [current, setcurrent] = useState(null);
 
+  //确定用户权限身份
+  const { roleId, region, username } = JSON.parse(
+    localStorage.getItem("token")
+  );
+
   useEffect(() => {
+    const roleObj = {
+      1: "superadmin",
+      2: "admin",
+      3: "editor",
+    };
     axios.get("http://localhost:5000/users?_expand=role").then((res) => {
       const list = res.data;
       console.log(res.data);
@@ -29,8 +39,17 @@ const UserList = () => {
           item.children = "";
         }
       });
-
-      setdataSource(list);
+      setdataSource(
+        roleObj[roleId] === "superadmin" //过滤数据 看看是不是超级管理员
+          ? list
+          : [
+              ...list.filter((item) => item.username === username),
+              ...list.filter(
+                (item) =>
+                  item.region === region && roleObj[item.roleId] === "editor"
+              ),
+            ]
+      );
     });
   }, []);
 
