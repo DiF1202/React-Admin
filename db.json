@@ -12,14 +12,14 @@
     {
       "username": "铁锤",
       "password": "123",
-      "roleState": true,
+      "roleState": false,
       "default": false,
       "region": "亚洲",
       "roleId": 2,
       "id": 2
     },
     {
-      "username": "钢蛋",
+      "username": "钢蛋1112",
       "password": "123",
       "roleState": true,
       "default": false,
@@ -71,6 +71,15 @@
       "region": "亚洲",
       "roleId": 3,
       "id": 8
+    },
+    {
+      "username": "asdsad",
+      "password": "dsd",
+      "region": "欧洲",
+      "roleId": 2,
+      "roleState": true,
+      "default": false,
+      "id": 10
     }
   ],
   "roles": [
@@ -79,6 +88,7 @@
       "roleName": "超级管理员",
       "roleType": 1,
       "rights": [
+        "/home",
         "/user-manage",
         "/user-manage/add",
         "/user-manage/delete",
@@ -97,15 +107,7 @@
         "/news-manage/update/:id",
         "/news-manage/preview/:id",
         "/news-manage/draft",
-        "/news-manage/category",
-        "/audit-manage",
-        "/audit-manage/audit",
-        "/audit-manage/list",
-        "/publish-manage",
-        "/publish-manage/unpublished",
-        "/publish-manage/published",
-        "/publish-manage/sunset",
-        "/home"
+        "/news-manage/category"
       ]
     },
     {

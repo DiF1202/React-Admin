@@ -7,88 +7,15 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 const { confirm } = Modal;
-
-const treeData1 = [
-  {
-    title: "0-0",
-    key: "0-0",
-    children: [
-      {
-        title: "0-0-0",
-        key: "0-0-0",
-        children: [
-          {
-            title: "0-0-0-0",
-            key: "0-0-0-0",
-          },
-          {
-            title: "0-0-0-1",
-            key: "0-0-0-1",
-          },
-          {
-            title: "0-0-0-2",
-            key: "0-0-0-2",
-          },
-        ],
-      },
-      {
-        title: "0-0-1",
-        key: "0-0-1",
-        children: [
-          {
-            title: "0-0-1-0",
-            key: "0-0-1-0",
-          },
-          {
-            title: "0-0-1-1",
-            key: "0-0-1-1",
-          },
-          {
-            title: "0-0-1-2",
-            key: "0-0-1-2",
-          },
-        ],
-      },
-      {
-        title: "0-0-2",
-        key: "0-0-2",
-      },
-    ],
-  },
-  {
-    title: "0-1",
-    key: "0-1",
-    children: [
-      {
-        title: "0-1-0-0",
-        key: "0-1-0-0",
-      },
-      {
-        title: "0-1-0-1",
-        key: "0-1-0-1",
-      },
-      {
-        title: "0-1-0-2",
-        key: "0-1-0-2",
-      },
-    ],
-  },
-  {
-    title: "0-2",
-    key: "0-2",
-  },
-];
-const RoleList = () => {
-  const [dataSource, setdataSource] = useState([]);
-  const [rightList, setRightList] = useState([]);
+export default function RoleList() {
+  const [dataSource, setdataSource] = useState([]); //数据源
+  const [isModalVisible, setisModalVisible] = useState(false); //控制弹框
+  const [rightList, setRightList] = useState([]); //数据源
   const [currentRights, setcurrentRights] = useState([]);
   const [currentId, setcurrentId] = useState(0);
-  const [isModalVisible, setisModalVisible] = useState(false);
-  //
-  const [expandedKeys, setExpandedKeys] = useState(["0-0-0", "0-0-1"]);
-  const [checkedKeys, setCheckedKeys] = useState(["0-0-0"]);
-  const [selectedKeys, setSelectedKeys] = useState([]);
+  //下面的为树形式结构的控制
   const [autoExpandParent, setAutoExpandParent] = useState(true);
+  const [expandedKeys, setExpandedKeys] = useState([]);
 
   const columns = [
     {
@@ -128,7 +55,7 @@ const RoleList = () => {
       },
     },
   ];
-  //确定删除吗？
+
   const confirmMethod = (item) => {
     confirm({
       title: "你确定要删除?",
@@ -159,11 +86,10 @@ const RoleList = () => {
   }, []);
 
   const formatData = (arr) => {
-    // console.log(arr);
     if (arr?.length > 0) {
       for (const item of arr) {
         item.title = item.label;
-        if (item?.children?.length !== 0) {
+        if (item?.children?.length > 0) {
           formatData(item.children);
         }
       }
@@ -173,14 +99,14 @@ const RoleList = () => {
 
   useEffect(() => {
     axios.get("http://localhost:5000/rights?_embed=children").then((res) => {
-      const list = formatData(res.data);
-      console.log(list);
-      setRightList(list);
+      //换数据
+      // console.log(res.data);
+      setRightList(formatData(res.data));
     });
   }, []);
 
   const handleOk = () => {
-    console.log(currentRights, currentId);
+    // console.log(currentRights, currentId);
     setisModalVisible(false);
     //同步datasource
     setdataSource(
@@ -201,26 +127,20 @@ const RoleList = () => {
     });
   };
 
+  //关闭弹出框
   const handleCancel = () => {
     setisModalVisible(false);
   };
 
   const onCheck = (checkKeys) => {
-    // console.log(checkKeys)
     setcurrentRights(checkKeys.checked);
+    setCheckedKeys(checkedKeysValue);
   };
 
+  //树形结构的控制
   const onExpand = (expandedKeysValue) => {
-    console.log("onExpand", expandedKeysValue); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
-
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
-  };
-
-  const onSelect = (selectedKeysValue, info) => {
-    console.log("onSelect", info);
-    setSelectedKeys(selectedKeysValue);
   };
 
   return (
@@ -230,6 +150,7 @@ const RoleList = () => {
         columns={columns}
         rowKey={(item) => item.id}
       ></Table>
+
       <Modal
         title="权限分配"
         visible={isModalVisible}
@@ -240,15 +161,13 @@ const RoleList = () => {
           checkable
           onExpand={onExpand}
           expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
           checkedKeys={currentRights}
           onCheck={onCheck}
-          onSelect={onSelect}
           checkStrictly={true}
-          treeData={treeData1}
+          treeData={rightList}
         />
       </Modal>
     </div>
   );
-};
-
-export default RoleList;
+}
