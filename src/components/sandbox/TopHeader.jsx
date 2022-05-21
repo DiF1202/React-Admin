@@ -5,41 +5,19 @@ import { DownOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 const { Header } = Layout;
-const menu = (
-  <Menu
-    items={[
-      {
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            1st menu item
-          </a>
-        ),
-      },
-      {
-        danger: true,
-        label: (
-          <div
-            onClick={(props) => {
-              localStorage.removeItem("token");
-              props.history.replace("/login");
-            }}
-          >
-            退出
-          </div>
-        ),
-      },
-    ]}
-  />
-);
+// const menu = (
+
+// );
 const TopHeader = (props) => {
   const [collapsed, setCollapsed] = useState(false);
   const changeCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  const {
+    role: { roleName },
+    username,
+  } = JSON.parse(localStorage.getItem("token"));
 
   return (
     <Header className="site-layout-background" style={{ padding: "0 16px" }}>
@@ -50,8 +28,34 @@ const TopHeader = (props) => {
       )}
 
       <div style={{ float: "right" }}>
-        <span>欢迎admin回来</span>
-        <Dropdown overlay={menu}>
+        <span>
+          欢迎<span style={{ color: "#1890ff" }}>{username}</span>回来
+        </span>
+        <Dropdown
+          overlay={
+            <Menu
+              items={[
+                {
+                  label: <div>{roleName}</div>,
+                },
+                {
+                  danger: true,
+                  label: (
+                    <div
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        // console.log(props.history)
+                        props.history.replace("/login");
+                      }}
+                    >
+                      退出
+                    </div>
+                  ),
+                },
+              ]}
+            />
+          }
+        >
           <Avatar size="large" icon={<UserOutlined />} />
         </Dropdown>
       </div>
