@@ -107,7 +107,14 @@
         "/news-manage/update/:id",
         "/news-manage/preview/:id",
         "/news-manage/draft",
-        "/news-manage/category"
+        "/news-manage/category",
+        "/audit-manage",
+        "/audit-manage/audit",
+        "/audit-manage/list",
+        "/publish-manage",
+        "/publish-manage/unpublished",
+        "/publish-manage/published",
+        "/publish-manage/sunset"
       ]
     },
     {
