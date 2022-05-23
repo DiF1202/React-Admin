@@ -32,21 +32,32 @@ const NewsAdd = (props) => {
     });
   }, []);
 
-  //保存
+  useEffect(() => {
+    // console.log()
+    axios
+      .get(`/news/${props.match.params.id}?_expand=category&_expand=role`)
+      .then((res) => {
+        // setnewsInfo(res.data)
+
+        // content ,
+        // formInfo
+        let { title, categoryId, content } = res.data;
+        NewsForm.current.setFieldsValue({
+          title,
+          categoryId,
+        });
+
+        setContent(content);
+      });
+  }, [props.match.params.id]);
+
+  //更新
   const handleSave = (auditState) => {
     axios
-      .post("/news", {
+      .patch(`/news/${props.match.params.id}`, {
         ...formInfo,
         content: content,
-        region: User.region ? User.region : "全球",
-        author: User.username,
-        roleId: User.roleId,
         auditState: auditState,
-        publishState: 0,
-        createTime: Date.now(),
-        star: 0,
-        view: 0,
-        // "publishTime": 0
       })
       .then((res) => {
         props.history.push(
@@ -98,8 +109,8 @@ const NewsAdd = (props) => {
       <PageHeader
         className="site-page-header"
         // onBack={() => null}
-        title="撰写新闻"
-        subTitle="This is a subtitle"
+        title="更新新闻"
+        onBack={() => props.history.goBack()}
       />
       <Steps current={current}>
         <Step title="基本信息" description="新闻标题，新闻分类" />
@@ -143,6 +154,7 @@ const NewsAdd = (props) => {
               // console.log(value)
               setContent(value);
             }}
+            content={content}
           ></NewsEditor>
         </div>
       </div>

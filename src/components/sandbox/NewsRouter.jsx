@@ -13,6 +13,8 @@ import AuditList from "../../pages/sandbox/audit-manage/AuditList.jsx";
 import Unpublished from "../../pages/sandbox/publish-manage/Unpublished.jsx";
 import Published from "../../pages/sandbox/publish-manage/Published.jsx";
 import Sunset from "../../pages/sandbox/publish-manage/Sunset.jsx";
+import NewsUpdate from "../../pages/sandbox/news-manage/NewsUpdate.jsx";
+import NewsPreview from "../../pages/sandbox/news-manage/NewsPreview.jsx";
 import axios from "axios";
 
 //构建本地路由map
@@ -24,13 +26,14 @@ const LocalRouterMap = {
   "/news-manage/add": NewsAdd,
   "/news-manage/draft": NewsDraft,
   "/news-manage/category": NewsCategory,
+  "/news-manage/preview/:id": NewsPreview,
+  "/news-manage/update/:id": NewsUpdate,
   "/audit-manage/audit": Audit,
   "/audit-manage/list": AuditList,
   "/publish-manage/unpublished": Unpublished,
   "/publish-manage/published": Published,
   "/publish-manage/sunset": Sunset,
 };
-
 const NewsRouter = () => {
   const [BackRouteList, setBackRouteList] = useState([]); //路由列表
   useEffect(() => {
@@ -45,8 +48,11 @@ const NewsRouter = () => {
 
   //权限控制
   const checkRoute = (item) => {
-    return LocalRouterMap[item.key] && item.pagepermisson;
+    return (
+      LocalRouterMap[item.key] && (item.pagepermisson || item.routepermisson)
+    );
   };
+
   //权限控制
   const checkUserPermission = (item) => {
     return rights.includes(item.key);
