@@ -34,10 +34,7 @@ const LocalRouterMap = {
 const NewsRouter = () => {
   const [BackRouteList, setBackRouteList] = useState([]); //路由列表
   useEffect(() => {
-    Promise.all([
-      axios.get("http://localhost:5000/rights"),
-      axios.get("http://localhost:5000/children"),
-    ]).then((res) => {
+    Promise.all([axios.get("/rights"), axios.get("/children")]).then((res) => {
       setBackRouteList([...res[0].data, ...res[1].data]);
     });
   }, []);

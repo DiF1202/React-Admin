@@ -31,7 +31,7 @@ const UserList = () => {
       2: "admin",
       3: "editor",
     };
-    axios.get("http://localhost:5000/users?_expand=role").then((res) => {
+    axios.get("/users?_expand=role").then((res) => {
       const list = res.data;
       console.log(res.data);
       list.forEach((item) => {
@@ -54,14 +54,14 @@ const UserList = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/regions").then((res) => {
+    axios.get("/regions").then((res) => {
       const list = res.data;
       setregionList(list);
     });
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/roles").then((res) => {
+    axios.get("/roles").then((res) => {
       const list = res.data;
       setroleList(list);
     });
@@ -167,7 +167,7 @@ const UserList = () => {
     item.roleState = !item.roleState;
     setdataSource([...dataSource]);
     //后端改变
-    axios.patch(`http://localhost:5000/users/${item.id}`, {
+    axios.patch(`/users/${item.id}`, {
       roleState: item.roleState,
     });
   };
@@ -191,7 +191,7 @@ const UserList = () => {
     // console.log(item)
     // 当前页面同步状态 + 后端同步
     setdataSource(dataSource.filter((data) => data.id !== item.id));
-    axios.delete(`http://localhost:5000/users/${item.id}`);
+    axios.delete(`/users/${item.id}`);
   };
 
   //确定添加
@@ -201,7 +201,7 @@ const UserList = () => {
       addForm.current.resetFields(); //清空表单
       //post到后端，生成id，再设置 datasource, 方便后面的删除和更新
       axios
-        .post(`http://localhost:5000/users`, {
+        .post(`/users`, {
           ...value,
           roleState: true,
           default: false,
@@ -239,7 +239,7 @@ const UserList = () => {
       );
       setisUpdateDisabled(!isUpdateDisabled);
 
-      axios.patch(`http://localhost:5000/users/${current.id}`, value);
+      axios.patch(`/users/${current.id}`, value);
     });
   };
 

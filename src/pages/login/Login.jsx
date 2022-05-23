@@ -12,7 +12,7 @@ export default function login(props) {
     console.log(values);
     axios
       .get(
-        `http://localhost:5000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`
+        `/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`
       )
       .then((res) => {
         // console.log(res.data);
