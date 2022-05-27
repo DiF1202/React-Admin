@@ -1,3 +1,4 @@
+//富文本编辑器组件
 import React, { useEffect, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
