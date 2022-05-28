@@ -1,3 +1,4 @@
+//封装通用组件
 import React from "react";
 import { Table } from "antd";
 

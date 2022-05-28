@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import axios from "axios";
+import { Spin } from "antd";
+import { connect } from "react-redux";
 import Home from "../../pages/sandbox/home/Home.jsx";
 import UserList from "../../pages/sandbox/user-manage/UserList.jsx";
 import RoleList from "../../pages/sandbox/right-manage/RoleList.jsx";
@@ -15,7 +18,6 @@ import Published from "../../pages/sandbox/publish-manage/Published.jsx";
 import Sunset from "../../pages/sandbox/publish-manage/Sunset.jsx";
 import NewsUpdate from "../../pages/sandbox/news-manage/NewsUpdate.jsx";
 import NewsPreview from "../../pages/sandbox/news-manage/NewsPreview.jsx";
-import axios from "axios";
 
 //构建本地路由map
 const LocalRouterMap = {
@@ -34,7 +36,7 @@ const LocalRouterMap = {
   "/publish-manage/published": Published,
   "/publish-manage/sunset": Sunset,
 };
-const NewsRouter = () => {
+const NewsRouter = (props) => {
   const [BackRouteList, setBackRouteList] = useState([]); //路由列表
   useEffect(() => {
     Promise.all([axios.get("/rights"), axios.get("/children")]).then((res) => {
@@ -59,7 +61,7 @@ const NewsRouter = () => {
   };
 
   return (
-    <div>
+    <Spin size="large" spinning={props.isLoading}>
       <Switch>
         {BackRouteList.map((item) => {
           if (checkRoute(item) && checkUserPermission(item)) {
@@ -80,8 +82,12 @@ const NewsRouter = () => {
           <Route path="*" component={Nopermission} />
         )}
       </Switch>
-    </div>
+    </Spin>
   );
 };
 
-export default NewsRouter;
+const mapStateToProps = ({ LoadingReducer: { isLoading } }) => ({
+  isLoading,
+});
+
+export default connect(mapStateToProps)(NewsRouter);

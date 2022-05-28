@@ -4,6 +4,7 @@ import { Layout, Menu } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import { connect } from "react-redux";
 const { Sider } = Layout;
 
 //图标映射表
@@ -60,7 +61,7 @@ const SideMenu = (props) => {
   const openKeys = ["/" + props.location.pathname.split("/")[1]];
 
   return (
-    <Sider trigger={null} collapsible collapsed={false}>
+    <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div style={{ display: "flex", height: "100%", flexDirection: "column" }}>
         <div className="logo">博客后台管理系统</div>
         <div style={{ flex: 1, overflow: "auto" }}>
@@ -80,4 +81,13 @@ const SideMenu = (props) => {
   );
 };
 
-export default withRouter(SideMenu);
+//返回值必须是一个对象
+const mapStateToProps = ({ CollApsedReducer: { isCollapsed } }) => {
+  // console.log(state) 这些都是从state里面解构赋值出来的
+  //返回的东西会挂到props上去
+  return {
+    isCollapsed,
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(SideMenu));

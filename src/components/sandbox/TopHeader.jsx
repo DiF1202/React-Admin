@@ -3,15 +3,18 @@ import { Layout, Menu, Dropdown, Avatar, Button } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { DownOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 const { Header } = Layout;
 // const menu = (
 
 // );
 const TopHeader = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
   const changeCollapsed = () => {
-    setCollapsed(!collapsed);
+    // setCollapsed(!collapsed);
+    //改变state中的isColapsed
+    props.changeCollapsed();
   };
 
   const {
@@ -21,7 +24,7 @@ const TopHeader = (props) => {
 
   return (
     <Header className="site-layout-background" style={{ padding: "0 16px" }}>
-      {collapsed ? (
+      {props.isCollapsed ? (
         <MenuUnfoldOutlined onClick={changeCollapsed}></MenuUnfoldOutlined>
       ) : (
         <MenuFoldOutlined onClick={changeCollapsed}></MenuFoldOutlined>
@@ -63,4 +66,34 @@ const TopHeader = (props) => {
   );
 };
 
-export default withRouter(TopHeader);
+/*
+ connect(
+  // mapStateToProps  
+  // mapDispatchToProps
+ )(被包装的组件)
+*/
+
+//返回值必须是一个对象
+const mapStateToProps = ({ CollApsedReducer: { isCollapsed } }) => {
+  // console.log(state) 这些都是从state里面解构赋值出来的
+  //返回的东西会挂到props上去
+  return {
+    isCollapsed,
+  };
+};
+
+//返回的东西会挂到props上去
+const mapDispatchToProps = {
+  changeCollapsed() {
+    //return的是action
+    return {
+      type: "change_collapsed",
+      // payload:
+    }; //action
+  },
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(TopHeader));
