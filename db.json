@@ -612,11 +612,12 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 1,
+      "publishState": 3,
       "createTime": 1653650987638,
       "star": 0,
       "view": 0,
-      "id": 12
+      "id": 12,
+      "publishTime": 1653726675023
     }
   ]
 }

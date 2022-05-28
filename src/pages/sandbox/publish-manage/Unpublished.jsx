@@ -1,11 +1,22 @@
-import React from 'react';
+//发布管理-待发布
+import NewsPublish from "../../../components/publish-manage/NewsPublish";
+import usePublish from "../../../components/publish-manage/usePublish";
+import { Button } from "antd";
 
-const Unpublished = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+export default function Unpublished() {
+  // 1=== 待发布的
+  const { dataSource, handlePublish } = usePublish(1);
+
+  return (
+    <div>
+      <NewsPublish
+        dataSource={dataSource}
+        button={(id) => (
+          <Button type="primary" onClick={() => handlePublish(id)}>
+            发布
+          </Button>
+        )}
+      ></NewsPublish>
+    </div>
+  );
 }
-
-export default Unpublished;

@@ -1,3 +1,4 @@
+//新闻管理-新闻分类
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Button, Table, Modal, Form, Input } from "antd";
 import axios from "axios";
@@ -12,9 +13,9 @@ export default function NewsCategory() {
     });
   }, []);
 
+  //双击后进入可编辑状态 结束后进入保存操作
   const handleSave = (record) => {
     // console.log(record)
-
     setdataSource(
       dataSource.map((item) => {
         if (item.id === record.id) {
@@ -27,7 +28,6 @@ export default function NewsCategory() {
         return item;
       })
     );
-
     axios.patch(`/categories/${record.id}`, {
       title: record.title,
       value: record.title,
@@ -94,6 +94,7 @@ export default function NewsCategory() {
 
   const EditableContext = React.createContext(null);
 
+  //复制于antd官网
   const EditableRow = ({ index, ...props }) => {
     const [form] = Form.useForm();
     return (
@@ -105,6 +106,7 @@ export default function NewsCategory() {
     );
   };
 
+  //复制于antd官网
   const EditableCell = ({
     title,
     editable,
@@ -183,6 +185,7 @@ export default function NewsCategory() {
           pageSize: 5,
         }}
         rowKey={(item) => item.id}
+        // 传入components使其变得可编辑
         components={{
           body: {
             row: EditableRow,
