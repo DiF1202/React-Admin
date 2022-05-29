@@ -15,6 +15,17 @@ const iconList = {
   "/right-manage": <UserOutlined />,
   "/right-manage/role/list": <UserOutlined />,
   "/right-manage/right/list": <UserOutlined />,
+  "/news-manage": <UserOutlined />,
+  "/news-manage/add": <UserOutlined />,
+  "/news-manage/draft": <UserOutlined />,
+  "/news-manage/category": <UserOutlined />,
+  "/audit-manage": <UserOutlined />,
+  "/audit-manage/audit": <UserOutlined />,
+  "/audit-manage/list": <UserOutlined />,
+  "/publish-manage": <UserOutlined />,
+  "/publish-manage/unpublished": <UserOutlined />,
+  "/publish-manage/published": <UserOutlined />,
+  "/publish-manage/sunset": <UserOutlined />,
 };
 
 const SideMenu = (props) => {
