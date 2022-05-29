@@ -63,7 +63,7 @@ const SideMenu = (props) => {
   return (
     <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div style={{ display: "flex", height: "100%", flexDirection: "column" }}>
-        <div className="logo">博客后台管理系统</div>
+        <div className="logo">React-Admin</div>
         <div style={{ flex: 1, overflow: "auto" }}>
           <Menu
             theme="dark"
